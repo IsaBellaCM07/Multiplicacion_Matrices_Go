@@ -90,6 +90,9 @@ func main() {
 
 	// Guardar los resultados en archivos separados por tamaño
 	saveResultsBySize(sizes, results)
+
+	// Guardar los promedios de tiempos de ejecución en un archivo CSV
+	saveAverageResults(results)
 }
 
 func nextPowerOfTwo(n int) int {
@@ -167,5 +170,35 @@ func saveResultsBySize(sizes []int, results map[string]map[int]float64) {
 				writer.Write([]string{algo, fmt.Sprintf("%f", time)})
 			}
 		}
+	}
+}
+
+func saveAverageResults(results map[string]map[int]float64) {
+	// Crear el archivo para guardar los resultados promedios
+	file, err := os.Create("resultados/tiempos/tiempo_promedio.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	// Crear el escritor CSV
+	writer := csv.NewWriter(file)
+	defer writer.Flush()
+
+	// Escribir la cabecera
+	writer.Write([]string{"Algoritmo", "Tiempo Promedio General (segundos)"})
+
+	// Calcular y escribir el tiempo promedio para cada algoritmo
+	for algo, times := range results {
+		var totalTime float64
+		var count int
+		for _, time := range times {
+			totalTime += time
+			count++
+		}
+		avgTime := totalTime / float64(count)
+
+		// Escribir el resultado promedio
+		writer.Write([]string{algo, fmt.Sprintf("%f", avgTime)})
 	}
 }
