@@ -150,7 +150,7 @@ func saveResultsBySize(sizes []int, results map[string]map[int]float64) {
 	// Para cada tamaño de matriz
 	for _, size := range sizes {
 		// Crear el archivo para guardar los resultados de ese tamaño específico
-		filename := fmt.Sprintf("resultados/tiempos/tiempos_%d.csv", size)
+		filename := fmt.Sprintf("I:/Universidad_Isa/SEMESTRE VIII/Analisis de Algoritmos/ProyectoFinal_Graficos/ProyectoFinal/tiempos/tiempos_go/tiempos_%d.csv", size)
 		file, err := os.Create(filename)
 		if err != nil {
 			log.Fatal(err)
@@ -175,7 +175,7 @@ func saveResultsBySize(sizes []int, results map[string]map[int]float64) {
 
 func saveAverageResults(results map[string]map[int]float64) {
 	// Crear el archivo para guardar los resultados promedios
-	file, err := os.Create("resultados/tiempos/tiempo_promedio.csv")
+	file, err := os.Create("I:/Universidad_Isa/SEMESTRE VIII/Analisis de Algoritmos/ProyectoFinal_Graficos/ProyectoFinal/tiempos/tiempos_go/tiempo_promedio.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
