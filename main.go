@@ -39,53 +39,63 @@ func main() {
 
 		// NaivOnArray
 		start := time.Now()
-		algoritmos.NaivOnArray(A, B)
+		result := algoritmos.NaivOnArray(A, B)
 		results["NaivOnArray"][size] = time.Since(start).Seconds()
+		saveMatrixResultToCSV("resultados/resultados_matrices", "NaivOnArray", size, result)
 
 		// NaivLoopUnrollingTwo
 		start = time.Now()
-		algoritmos.NaivLoopUnrollingTwo(A, B)
+		result = algoritmos.NaivLoopUnrollingTwo(A, B)
 		results["NaivLoopUnrollingTwo"][size] = time.Since(start).Seconds()
+		saveMatrixResultToCSV("resultados/resultados_matrices", "NaivLoopUnrollingTwo", size, result)
 
 		// NaivLoopUnrollingFour
 		start = time.Now()
-		algoritmos.NaivLoopUnrollingFour(A, B)
+		result = algoritmos.NaivLoopUnrollingFour(A, B)
 		results["NaivLoopUnrollingFour"][size] = time.Since(start).Seconds()
+		saveMatrixResultToCSV("resultados/resultados_matrices", "NaivLoopUnrollingFour", size, result)
 
 		// WinogradOriginal
 		start = time.Now()
-		algoritmos.WinogradOriginal(A, B)
+		result = algoritmos.WinogradOriginal(A, B)
 		results["WinogradOriginal"][size] = time.Since(start).Seconds()
+		saveMatrixResultToCSV("resultados/resultados_matrices", "WinogradOriginal", size, result)
 
 		// WinogradScaled
 		start = time.Now()
-		algoritmos.WinogradScaled(A, B)
+		result = algoritmos.WinogradScaled(A, B)
 		results["WinogradScaled"][size] = time.Since(start).Seconds()
+		saveMatrixResultToCSV("resultados/resultados_matrices", "WinogradScaled", size, result)
 
 		// StrassenNaiv
 		start = time.Now()
-		algoritmos.StrassenNaiv(A, B)
+		result = algoritmos.StrassenNaiv(A, B)
 		results["StrassenNaiv"][size] = time.Since(start).Seconds()
+		saveMatrixResultToCSV("resultados/resultados_matrices", "StrassenNaiv", size, result)
 
 		// III.3 Sequential Block
 		start = time.Now()
-		algoritmos.SequentialBlock(A, B)
+		result = algoritmos.SequentialBlock(A, B)
 		results["III.3 Sequential Block"][size] = time.Since(start).Seconds()
+		saveMatrixResultToCSV("resultados/resultados_matrices", "III.3 Sequential Block", size, result)
 
 		// IV.3 Sequential Block
 		start = time.Now()
-		algoritmos.SequentialBlockIV(A, B)
+		result = algoritmos.SequentialBlockIV(A, B)
 		results["IV.3 Sequential Block"][size] = time.Since(start).Seconds()
+		saveMatrixResultToCSV("resultados/resultados_matrices", "IV.3 Sequential Block", size, result)
 
 		// V.3 Sequential Block
 		start = time.Now()
-		algoritmos.SequentialBlockV(A, B)
+		result = algoritmos.SequentialBlockV(A, B)
 		results["V.3 Sequential Block"][size] = time.Since(start).Seconds()
+		saveMatrixResultToCSV("resultados/resultados_matrices", "V.3 Sequential Block", size, result)
 
 		// V.4 Parallel Block
 		start = time.Now()
-		algoritmos.ParallelBlockV(A, B)
+		result = algoritmos.ParallelBlockV(A, B)
 		results["V.4 Parallel Block"][size] = time.Since(start).Seconds()
+		saveMatrixResultToCSV("resultados/resultados_matrices", "V.4 Parallel Block", size, result)
 	}
 
 	// Guardar los resultados en archivos separados por tamaño
@@ -143,6 +153,30 @@ func saveMatrixToFile(folder, filename string, matrix [][]int) {
 		}
 		// Escribir salto de línea después de cada fila
 		file.WriteString("\n")
+	}
+}
+
+func saveMatrixResultToCSV(folder, algorithm string, size int, matrix [][]int) {
+	// Crear el archivo para guardar el resultado de la multiplicación de matrices
+	filename := fmt.Sprintf("%s/%s_resultado_%d.csv", folder, algorithm, size)
+	file, err := os.Create(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	// Crear el escritor CSV
+	writer := csv.NewWriter(file)
+	defer writer.Flush()
+
+	// Escribir la matriz resultante en el archivo CSV
+	for i := 0; i < len(matrix); i++ {
+		row := make([]string, len(matrix[i]))
+		for j := 0; j < len(matrix[i]); j++ {
+			// Convertir cada valor de la matriz a cadena con formato adecuado
+			row[j] = fmt.Sprintf("%d", matrix[i][j])
+		}
+		writer.Write(row)
 	}
 }
 
